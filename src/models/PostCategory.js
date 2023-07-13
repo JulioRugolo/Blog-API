@@ -16,10 +16,17 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      tableName: 'PostCategories',
+      tableName: 'post_categories',
       timestamps: false,
     }
   );
+
+  PostCategory.associate = (models) => {
+    PostCategory.belongsToMany(models.Category, {
+      foreignKey: 'id',
+      as: 'categories',
+  });
+  };
 
   return PostCategory;
 };
