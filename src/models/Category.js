@@ -1,13 +1,17 @@
-'use strict';
-
+/**
+ *
+ * @param {import('sequelize').Sequelize} sequelize
+ * @param {*} DataTypes
+ * @returns
+ */
 module.exports = (sequelize, DataTypes) => {
   const Category = sequelize.define(
     'Category',
     {
       id: {
-        allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
         type: DataTypes.INTEGER,
       },
       name: {
@@ -16,9 +20,9 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      tableName: 'categories',
       timestamps: false,
-    }
+      underscored: true,
+    },
   );
 
   return Category;

@@ -1,13 +1,17 @@
-'use strict';
-
+/**
+ *
+ * @param {import('sequelize').Sequelize} sequelize
+ * @param {*} DataTypes
+ * @returns
+ */
 module.exports = (sequelize, DataTypes) => {
   const BlogPost = sequelize.define(
     'BlogPost',
     {
       id: {
-        allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
         type: DataTypes.INTEGER,
       },
       title: {
@@ -18,8 +22,15 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.STRING,
       },
-      user_id: {
+      userId: {
         allowNull: false,
+        field: 'user_id',
+        references: {
+          model: 'users',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
         type: DataTypes.INTEGER,
       },
       published: {
@@ -33,18 +44,15 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       tableName: 'blog_posts',
+      timestamps: false,
+      underscored: true,
     }
   );
 
   BlogPost.associate = (models) => {
-    BlogPost.belongsTo(models.User, {
-      foreignKey: 'user_id',
-      as: 'user',
-    });
-    BlogPost.hasMany(models.Category, {
-      through: 'PostCategories',
-      foreignKey: 'post_id',
-      as: 'categories',
+    BlogPost.belongsTo(models.User, { 
+      foreignKey: 'id', 
+      as: 'user' 
     });
   };
 
