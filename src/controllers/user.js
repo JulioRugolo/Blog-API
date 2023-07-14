@@ -4,12 +4,14 @@ const userService = require('../services/user');
 const createUser = async (req, res) => {
   const user = await userService.createUser(req.body);
 
+  if (user === true) {
+    return res.status(409).json({ message: 'User already registered' });
+  }
+
   const { displayName, email } = user.dataValues;
   const token = createToken({ name: displayName, email });
   
-  return user === true
-  ? res.status(409).json({ message: 'User already registered' })
-  : res.status(201).json({ token });
+  return res.status(201).json({ token });
 };
 
 const getAllUsers = async (req, res) => {
@@ -21,11 +23,9 @@ const getUserById = async (req, res) => {
   const { id } = req.params;
   const user = await userService.getUserById(id);
 
-  if (user.message) {
-    return res.status(404).json(user);
-  }
-
-  return res.status(200).json(user);
+  return user.message !== undefined
+    ? res.status(404).json(user)
+    : res.status(200).json(user);
 };
 
 module.exports = {
