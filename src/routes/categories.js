@@ -1,9 +1,10 @@
 const express = require('express');
-const { createCategory } = require('../controllers/category');
-const tokenValidationCategories = require('../middleware/validateTokenCategories');
+const { createCategory, getAllCategories } = require('../controllers/category');
+const { tokenValidation } = require('../middleware/tokenValidator');
 
 const router = express.Router();
 
-router.post('/', tokenValidationCategories, createCategory);
+router.post('/', tokenValidation, createCategory);
+router.get('/', tokenValidation, getAllCategories);
 
 module.exports = router;
